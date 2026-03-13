@@ -1,0 +1,59 @@
+<div class="d-flex align-items-stretch" data-controller="overtime-stats" data-trades="<%= @all_trades.to_json %>">
+    <div><%= render 'shared/sidebar' %></div>
+
+    <div class="border d-flex flex-column justify-content-center align-items-center" style="width: 95%">
+
+        <div class="m-5 p-3 border rounded-5" style="width: 80%; height: 80%">
+            <h3>Cumulative P&L</h3>
+
+            <div class="d-flex justify-content-start align-items-center flex-wrap mb-2">
+                <% [["All time", 0], ["30 days", 30], ["14 days", 14], ["7 days", 7], ["5 days", 5], ["4 days", 4], ["3 days", 3], ["2 days", 2], ["1 day", 1]].each do |label, days| %>
+                    <button type="button" class="btn btn-sm btn-outline-secondary m-1"
+                            data-action="click->overtime-stats#filterDays"
+                            data-overtime-stats-days-param="<%= days %>"><%= label %></button>
+                <% end %>
+
+                <div class="d-flex align-items-center">
+                    <span class="m-1">Custom:</span>
+                    <input type="date" class="form-control form-control-sm m-1" style="width: 140px"
+                           data-overtime-stats-target="customFrom">
+                    <span class="m-1">-</span>
+                    <input type="date" class="form-control form-control-sm m-1" style="width: 140px"
+                           data-overtime-stats-target="customTo">
+                    <button type="button" class="btn btn-sm btn-outline-primary m-1"
+                            data-action="click->overtime-stats#applyCustom">Apply</button>
+                </div>
+            </div>
+
+            <canvas data-overtime-stats-target="canvas"></canvas>
+        </div>
+
+        <div class="m-5 p-3 border rounded-5" style="width: 80%; height: 80%">
+            <h3>Daily P&L</h3>
+            <canvas data-overtime-stats-target="barCanvas"></canvas>
+        </div>
+
+        <div class="card shadow-sm rounded-4 m-5" style="width: 80%; height: 80%">
+            <div class="card-header bg-white border-0">
+                <h5 class="mb-0">Trade History</h5>
+            </div>
+
+            <div class="card-body p-0" style="width: 100%;">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Open Time</th>
+                            <th>Direction</th>
+                            <th>Symbol</th>
+                            <th>Profit</th>
+                        </tr>
+                    </thead>
+
+                    <tbody data-overtime-stats-target="tradeTable">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -67,3 +67,4 @@ group :test do
   gem "selenium-webdriver"
 end
 gem "erb_lint", "~> 0.9.0", group: :development
+gem "devise"

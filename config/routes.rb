@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   get "pages/home"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -12,15 +13,14 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
-  root "sessions#new"
+  devise_scope :user do
+  root "devise/sessions#new"
+  end
 
-  get "/login", to: "sessions#new"
-
-  post "/login", to: "sessions#create"
 
   post "/signup", to: "users#create"
 
-  get "/dashboard", to: "pages#dashboard"
+  get "/dashboard", to: "dashboards#dashboard"
 
-  get "/overtime_stats", to: "pages#overtime_stats"
+  get "/overtime_stats", to: "dashboards#overtime_stats"
 end
