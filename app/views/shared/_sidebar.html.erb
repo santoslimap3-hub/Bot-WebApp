@@ -1,0 +1,20 @@
+<div class="d-flex flex-column p-3 align-items-center rounded-end-4" style="width: 100px; height: 100vh; background-color: orange;">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+        <span class="fs-4">Bot Webapp</span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+        <li>
+            <%= link_to "Dashboard", dashboard_path, class: "nav-link text-dark" %>
+        </li>
+        <li>
+            <%= link_to "Overtime Stats", overtime_stats_path, class: "nav-link text-dark" %>
+        </li>
+        <li>
+            <a href="#" class="nav-link text-dark">
+                trade outcomes overview
+            </a>
+        </li>
+    </ul>
+    <hr>
+</div>

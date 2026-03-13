@@ -8,3 +8,17 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+ .form-control:focus {
+  border-color: #C62828 !important;
+  box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.15) !important;
+}
+
+.btn-danger:hover {
+  background: #8B0000 !important;
+  transition: background 0.2s ease;
+}
+
+.btn-danger {
+  transition: background 0.2s ease;
+}

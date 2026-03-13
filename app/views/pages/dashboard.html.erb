@@ -1,0 +1,96 @@
+<div class="d-flex" data-controller="dashboard">
+
+  <div>
+    <%= render 'shared/sidebar' %>
+  </div>
+
+  <% @recent_trades = Trade.in_last(1).order(open_time: :desc) %>
+
+  <div class="container-fluid p-4" style="width:95%;">
+
+    <div class="row g-4 mb-4">
+
+      <div class="col-md-4">
+        <div class="card shadow-sm rounded-4 text-center h-100">
+          <div class="card-body d-flex flex-column justify-content-center">
+            <h6 class="text-muted">Net Profit (24h)</h6>
+
+            <h2 class="<%= @net_profit >= 0 ? 'text-success' : 'text-danger' %> fw-bold">
+              $<%= @net_profit %>
+            </h2>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-8">
+        <div class="card shadow-sm rounded-4 h-100">
+          <div class="card-body">
+            <h6 class="text-muted mb-3">Warnings</h6>
+
+            <p class="text-muted small">
+              No warnings detected
+            </p>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="card shadow-sm rounded-4">
+
+      <div class="card-header bg-white border-0">
+        <h5 class="mb-0">Recent Trades</h5>
+      </div>
+
+      <div class="card-body p-0">
+
+        <table class="table table-hover mb-0">
+
+          <thead class="table-light">
+            <tr>
+              <th>Open Time</th>
+              <th>Direction</th>
+              <th>Symbol</th>
+              <th>Profit</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <% @recent_trades.each do |trade| %>
+              <tr>
+
+                <td>
+                  <%= trade.open_time.strftime("%H:%M %d %b") %>
+                </td>
+
+                <td>
+                  <span class="badge <%= trade.direction == 'BUY' ? 'bg-success' : 'bg-danger' %>">
+                    <%= trade.direction %>
+                  </span>
+                </td>
+
+                <td><%= trade.symbol %></td>
+
+                <td class="<%= trade.net_profit >= 0 ? 'text-success' : 'text-danger' %> fw-semibold">
+                  $<%= trade.net_profit %>
+                </td>
+
+              </tr>
+            <% end %>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+```

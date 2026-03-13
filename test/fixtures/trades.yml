@@ -1,0 +1,41 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  close_comment: MyString
+  close_price: 9.99
+  close_reason: MyString
+  close_ticket: 1
+  close_time: 2026-03-11 14:01:05
+  commission: 9.99
+  direction: MyString
+  magic: 1
+  net_profit: 9.99
+  open_comment: MyString
+  open_price: 9.99
+  open_ticket: 1
+  open_time: 2026-03-11 14:01:05
+  position_id: 1
+  profit: 9.99
+  swap: 9.99
+  symbol: MyString
+  volume: 9.99
+
+two:
+  close_comment: MyString
+  close_price: 9.99
+  close_reason: MyString
+  close_ticket: 1
+  close_time: 2026-03-11 14:01:05
+  commission: 9.99
+  direction: MyString
+  magic: 1
+  net_profit: 9.99
+  open_comment: MyString
+  open_price: 9.99
+  open_ticket: 1
+  open_time: 2026-03-11 14:01:05
+  position_id: 1
+  profit: 9.99
+  swap: 9.99
+  symbol: MyString
+  volume: 9.99

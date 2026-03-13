@@ -1,0 +1,45 @@
+<div class="d-flex justify-content-center align-items-center vh-100 border">
+    <div class="d-flex flex-column align-items-center">
+        <h1 class="fs-4 fw-semibold text-center" style="color: #212121;">login</h1>
+        <p class="text-center mb-4" style="color: #757575">Sign in to your account</p>
+        <div class="card p-5 shadow" style="max_width: 400px; width: 100%; border-radius: 12px;">
+            <div data-controller="toggle-form">
+                <div data-toggle-form-target="loginCard" class="">
+                    <%= form_with url: "/login" do |form| %>
+                        <%= form.label :Email, class: "fs-14 fw-500", style: "color: #424242;" %>
+                        <%= form.text_field :email, data: { toggle_form_target: "email", action: "input->toggle-form#checkFields"}, class: "rounded-3 form-control mb-3", style: "height: 44px; padding: 0 12px; font-size: 15px;"%>  
+                        <%= form.label :Password, class: "fs-14 fw-500", style: "color: #424242" %>
+                        <%= form.password_field :password, data: { toggle_form_target: "password", action: "input->toggle-form#checkFields"}, class: "form-control rounded-3 mb-3", style: "height: 44px; padding: 0 12px; font-size: 15px"%>
+                        <%= form.submit "Sign-in", data: { toggle_form_target: "signInButton", action: "input->toggle-form#checkFields"}, disabled: true, class: "w-100 btn btn-danger rounded-3 fw-semibold mb-3", style: "border: none; background: #c62828; height: 46px; font-size: 15px;"%>
+                    <% end %>
+                    <div class="d-flex justify-content-between">
+                        <p>Don't have an account yet?</p>
+                        <button type="button" data-action="click->toggle-form#toggle">Create one</button>
+                    </div>
+                </div>
+                <div data-toggle-form-target="signupCard" class="d-none">
+                    <%= form_with url: "/signup" do |form| %>
+                        <%= form.label :Email, class: "fs-14 fw-500", style: "color: #424242;" %>
+                        <%= form.text_field :email, data: { toggle_form_target: "signUpEmail", action: "input->toggle-form#checkFields"}, class: "rounded-3 form-control mb-3", style: "height: 44px; padding: 0 12px; font-size: 15px;"%>
+
+                        <%= form.label :Password, class: "fs-14 fw-500", style: "color: #424242" %>
+                        <%= form.password_field :password, data: { toggle_form_target: "signUpPassword", action: "input->toggle-form#checkFields"}, class: "form-control rounded-3 mb-3", style: "height: 44px; padding: 0 12px; font-size: 15px"%>
+
+                        <%= form.label "Confirm password", class: "fs-14 fw-500", style: "color: #424242" %>
+                        <%= form.password_field :password_confirmation, data: { toggle_form_target: "signUpPasswordConfirmation", action: "input->toggle-form#checkFields"}, class: "form-control rounded-3 mb-3", style: "height: 44px; padding: 0 12px; font-size: 15px"%>
+                        <%= form.submit "Sign-up", data: { toggle_form_target: "signupButton"}, disabled: true, class: "w-100 btn btn-danger rounded-3 fw-semibold mb-3", style: "border: none; background: #c62828; height: 46px; font-size: 15px;"%>
+                    <% end %>
+                    <div class="d-flex justify-content-between">
+                        <p>Already have an account</p>
+                        <button type="button" data-action="click->toggle-form#toggle">Sign-in</button>
+                    </div>
+                </div>
+            </div>
+            <% if flash[:alert] %>
+                <div class="alert alert-danger">
+                    <%= flash[:alert] %>
+                </div>
+            <% end %>
+        </div>
+    </div>
+</div>
