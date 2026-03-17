@@ -1,22 +1,36 @@
+<div class="sidebar d-flex flex-column align-items-center py-3" style="width: 80px; min-height: 100vh; position: sticky; top: 0;">
 
-    <div class="d-flex flex-column p-3 align-items-center rounded-end-4" style="width: 100px; height: 100vh; position: sticky; top: 0; background-color: orange;">
-        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-            <span class="fs-4">Bot Webapp</span>
-        </a>
-        <hr>
-            <ul class="nav nav-pills flex-column mb-auto">
-                <li>
-                    <%= link_to "Dashboard", dashboard_path, class: "nav-link text-dark" %>
-                </li>
-                <li>
-                    <%= link_to "Overtime Stats", overtime_stats_path, class: "nav-link text-dark" %>
-                </li>
-                <li>
-                    <a href="#" class="nav-link text-dark">
-                        trade outcomes overview
-                    </a>
-                </li>
-            </ul>
-            <%= button_to "Log out", destroy_user_session_path, method: :delete %>
-        <hr>
-    </div>
+    <a href="/" class="text-decoration-none mb-4">
+        <span style="width:36px; height:36px; background: rgba(0,0,0,0.2); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px;">⚡</span>
+    </a>
+
+    <hr class="dark-hr w-100 mt-0 mb-3">
+
+    <ul class="nav flex-column align-items-center gap-2 mb-auto w-100">
+        <li class="nav-item w-100 text-center">
+            <%= link_to dashboard_path, class: "nav-link d-flex flex-column align-items-center gap-1", style: "font-size: 0.6rem; padding: 8px 4px;" do %>
+                <span style="font-size: 1.1rem;">📊</span>
+                Dashboard
+            <% end %>
+        </li>
+        <li class="nav-item w-100 text-center">
+            <%= link_to overtime_stats_path, class: "nav-link d-flex flex-column align-items-center gap-1", style: "font-size: 0.6rem; padding: 8px 4px;" do %>
+                <span style="font-size: 1.1rem;">📈</span>
+                Stats
+            <% end %>
+        </li>
+        <li class="nav-item w-100 text-center">
+            <%= link_to trade_outcomes_path, class: "nav-link d-flex flex-column align-items-center gap-1", style: "font-size: 0.6rem; padding: 8px 4px;" do %>
+                <span style="font-size: 1.1rem;">📈</span>
+                trade outcomes overview
+            <% end %>
+        </li>
+    </ul>
+
+    <hr class="dark-hr w-100 mb-2">
+
+    <%= button_to destroy_user_session_path, method: :delete, class: "btn-logout", style: "font-size: 0.6rem; padding: 4px 6px;" do %>
+        Out
+    <% end %>
+
+</div>

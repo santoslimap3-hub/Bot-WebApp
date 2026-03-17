@@ -1,24 +1,235 @@
 /*
- * This is a manifest file that'll be compiled into application.css.
- *
- * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
- * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
- * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
- * depending on specificity.
- *
- * Consider organizing styles into separate files for maintainability.
+ * Application-wide dark theme styles inspired by modern trading dashboards.
  */
 
- .form-control:focus {
-  border-color: #C62828 !important;
-  box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.15) !important;
+:root {
+  --bg-base:       #ffffff;
+  --bg-card:       #151821;
+  --bg-card-2:     #1c2030;
+  --border:        #252a3b;
+  --text-primary:  #e2e4f0;
+  --text-muted:    #5c6380;
+  --accent:        #7c5cfc;
+  --accent-dim:    rgba(124, 92, 252, 0.12);
+  --success:       #22c55e;
+  --danger:        #ef4444;
+  --success-dim:   rgba(34, 197, 94, 0.12);
+  --danger-dim:    rgba(239, 68, 68, 0.12);
 }
 
-.btn-danger:hover {
-  background: #8B0000 !important;
-  transition: background 0.2s ease;
+/* ── Base ──────────────────────────────────────────────── */
+body {
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, sans-serif;
+  min-height: 100vh;
 }
 
-.btn-danger {
-  transition: background 0.2s ease;
+/* ── Sidebar ───────────────────────────────────────────── */
+.sidebar {
+  width: 80px;
+  min-height: 100vh;
+  position: sticky;
+  top: 0;
+  background-color: #e87722;
+  border-right: 1px solid rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar .brand {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.03em;
+}
+
+.sidebar .nav-link {
+  color: rgba(255,255,255,0.75);
+  font-size: 0.85rem;
+  border-radius: 8px;
+  padding: 8px 12px;
+  transition: all 0.15s ease;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+  color: #fff;
+  background-color: rgba(0,0,0,0.15);
+}
+
+.sidebar hr.dark-hr {
+  border-color: rgba(0,0,0,0.2);
+}
+
+.sidebar .btn-logout {
+  border-color: rgba(0,0,0,0.2);
+  color: rgba(255,255,255,0.8);
+}
+
+.sidebar .btn-logout:hover {
+  border-color: #fff;
+  color: #fff;
+}
+
+/* ── Cards ─────────────────────────────────────────────── */
+.dark-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+}
+
+.dark-card h5,
+.dark-card h6 {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.5rem;
+}
+
+.dark-card .big-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* ── Tables ────────────────────────────────────────────── */
+.dark-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+}
+
+.dark-table thead th {
+  background-color: var(--bg-card-2);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.dark-table tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.12s ease;
+}
+
+.dark-table tbody tr:last-child { border-bottom: none; }
+
+.dark-table tbody tr:hover {
+  background-color: var(--bg-card-2);
+}
+
+.dark-table tbody td {
+  padding: 10px 16px;
+  color: var(--text-primary);
+}
+
+/* ── Badges ────────────────────────────────────────────── */
+.badge-buy {
+  background-color: var(--success-dim);
+  color: var(--success);
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.badge-sell {
+  background-color: var(--danger-dim);
+  color: var(--danger);
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ── Filter buttons ────────────────────────────────────── */
+.filter-btn {
+  background: var(--bg-card-2);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+  background: var(--accent-dim);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* ── Form inputs ───────────────────────────────────────── */
+.dark-input {
+  background-color: var(--bg-card-2) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text-primary) !important;
+  border-radius: 8px;
+  font-size: 0.8rem;
+}
+
+.dark-input:focus {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px rgba(124, 92, 252, 0.15) !important;
+  outline: none;
+}
+
+.dark-input::-webkit-calendar-picker-indicator {
+  filter: invert(0.6);
+}
+
+/* ── Accent button ─────────────────────────────────────── */
+.btn-accent {
+  background-color: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  padding: 5px 14px;
+  transition: opacity 0.15s ease;
+}
+
+.btn-accent:hover { opacity: 0.85; color: #fff; }
+
+/* ── Profit/Loss colors ────────────────────────────────── */
+.profit  { color: var(--success); }
+.loss    { color: var(--danger); }
+
+/* ── Divider ───────────────────────────────────────────── */
+hr.dark-hr {
+  border-color: var(--border);
+  opacity: 1;
+}
+
+/* ── Logout button ─────────────────────────────────────── */
+.btn-logout {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  border-radius: 8px;
+  font-size: 0.78rem;
+  padding: 5px 12px;
+  width: 100%;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.btn-logout:hover {
+  border-color: var(--danger);
+  color: var(--danger);
 }

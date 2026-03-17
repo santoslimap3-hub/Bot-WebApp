@@ -1,96 +1,73 @@
 <div class="d-flex align-items-stretch" data-controller="dashboard">
 
-  <div>
-    <%= render 'shared/sidebar' %>
-  </div>
+    <div><%= render 'shared/sidebar' %></div>
 
-  <% @recent_trades = Trade.in_last(1).order(open_time: :desc) %>
+    <div class="flex-grow-1 p-4" style="min-height: 100vh; background: var(--bg-base);">
 
-  <div class="container-fluid p-4" style="width:95%;">
-
-    <div class="row g-4 mb-4">
-
-      <div class="col-md-4">
-        <div class="card shadow-sm rounded-4 text-center h-100">
-          <div class="card-body d-flex flex-column justify-content-center">
-            <h6 class="text-muted">Net Profit (24h)</h6>
-
-            <h2 class="<%= @net_profit >= 0 ? 'text-success' : 'text-danger' %> fw-bold">
-              $<%= @net_profit %>
-            </h2>
-
-          </div>
+        <div class="mb-4">
+            <h4 style="color: var(--text-primary); font-weight: 700;">Dashboard</h4>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">Last 24 hours overview</p>
         </div>
-      </div>
 
-      <div class="col-md-8">
-        <div class="card shadow-sm rounded-4 h-100">
-          <div class="card-body">
-            <h6 class="text-muted mb-3">Warnings</h6>
+        <div class="row g-4 mb-4">
 
-            <p class="text-muted small">
-              No warnings detected
-            </p>
+            <div class="col-md-4">
+                <div class="dark-card h-100">
+                    <h6>Net Profit (All Time)</h6>
+                    <div class="big-value <%= @net_profit >= 0 ? 'profit' : 'loss' %>">
+                        $<%= @net_profit %>
+                    </div>
+                </div>
+            </div>
 
-          </div>
+            <div class="col-md-8">
+                <div class="dark-card h-100">
+                    <h6>Warnings</h6>
+                    <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">No warnings detected</p>
+                </div>
+            </div>
+
         </div>
-      </div>
+
+        <div class="dark-card p-0" style="overflow: hidden;">
+
+            <div class="d-flex align-items-center justify-content-between px-4 py-3"
+                 style="border-bottom: 1px solid var(--border);">
+                <span style="font-size: 0.9rem; font-weight: 600; color: var(--text-primary);">Recent Trades</span>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Last 24h</span>
+            </div>
+
+            <table class="dark-table">
+                <thead>
+                    <tr>
+                        <th>Open Time</th>
+                        <th>Direction</th>
+                        <th>Symbol</th>
+                        <th>Profit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% @recent_trades.each do |trade| %>
+                        <tr>
+                            <td style="color: var(--text-muted);">
+                                <%= trade.open_time.strftime("%H:%M %d %b") %>
+                            </td>
+                            <td>
+                                <span class="<%= trade.direction == 'BUY' ? 'badge-buy' : 'badge-sell' %>">
+                                    <%= trade.direction %>
+                                </span>
+                            </td>
+                            <td style="font-weight: 600;"><%= trade.symbol %></td>
+                            <td class="<%= trade.net_profit >= 0 ? 'profit' : 'loss' %> fw-semibold">
+                                $<%= trade.net_profit %>
+                            </td>
+                        </tr>
+                    <% end %>
+                </tbody>
+            </table>
+
+        </div>
 
     </div>
-
-
-    <div class="card shadow-sm rounded-4">
-
-      <div class="card-header bg-white border-0">
-        <h5 class="mb-0">Recent Trades</h5>
-      </div>
-
-      <div class="card-body p-0">
-
-        <table class="table table-hover mb-0">
-
-          <thead class="table-light">
-            <tr>
-              <th>Open Time</th>
-              <th>Direction</th>
-              <th>Symbol</th>
-              <th>Profit</th>
-            </tr>
-          </thead>
-
-          <tbody>
-
-            <% @recent_trades.each do |trade| %>
-              <tr>
-
-                <td>
-                  <%= trade.open_time.strftime("%H:%M %d %b") %>
-                </td>
-
-                <td>
-                  <span class="badge <%= trade.direction == 'BUY' ? 'bg-success' : 'bg-danger' %>">
-                    <%= trade.direction %>
-                  </span>
-                </td>
-
-                <td><%= trade.symbol %></td>
-
-                <td class="<%= trade.net_profit >= 0 ? 'text-success' : 'text-danger' %> fw-semibold">
-                  $<%= trade.net_profit %>
-                </td>
-
-              </tr>
-            <% end %>
-
-          </tbody>
-
-        </table>
-
-      </div>
-
-    </div>
-
-  </div>
 
 </div>
-```

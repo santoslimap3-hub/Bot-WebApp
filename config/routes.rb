@@ -23,4 +23,6 @@ Rails.application.routes.draw do
   get "/dashboard", to: "dashboards#dashboard"
 
   get "/overtime_stats", to: "dashboards#overtime_stats"
+
+  get "/trade_outcomes", to: "dashboards#trade_outcomes"
 end

@@ -1,0 +1,60 @@
+<div class="overall div d-flex justify-content-start gap-4" data-controller="trade-outcomes" data-trade-outcomes-records-value="<%= (@data || {}).to_json %>">
+    <div><%= render "shared/sidebar" %></div>
+    <div class="items-div flex-grow-1 p-4" style="min-height: 100vh; background: var(--bg-base);">
+        <div class="dark-card mb-4">
+            <div class="mb-3">
+                <span style="font-size: 0.9rem; font-weight: 600; color: var(--text-primary);">Outcomes Overview</span>
+            </div>
+            <canvas style="max-height: 300px" data-trade-outcomes-target="outcomesOverview"></canvas>
+        </div>
+        <div class="border">
+            <h4>Custom trades overview</h4>
+            <p>Add an order of levels hit and the graph will show you the number / P&L of trades that followed that path, example: TP1 → Breakeven → TP2 = 25 trades out of 100</p>
+            <div id="paths-container" class="paths-container">
+                <div class="trade-path border d-flex justify-content-start align-items-center">
+                    <h4>Trade_Path</h4>
+                    <div id="levels-container" class="levels-container d-flex justify-content-start align-items-center">
+                        <div class="input1">
+                            <input list="levels" data-action="input->trade-outcomes#getData" placeholder="Select level hit">
+                            <datalist id="levels">
+                                <option value="Stop Loss"></option>
+                                <option value="Entry Zone">
+                                <option value="BE">
+                                <option value="TP1">
+                                <option value="TP2">
+                                <option value="TP3">
+                                <option value="TP4">
+                                <option value="TP5">
+                            </datalist>
+                        </div>
+                        <div class="arrow-wrapper" data-action="mouseenter->trade-outcomes#toggleArrow mouseleave->trade-outcomes#toggleArrow">
+                            <span>→</span>
+                            <button class="remove-btn d-none" data-action="trade-outcomes#removeLevel">-</button>
+                        </div>
+                        <div class="input2">
+                            <input list="levels" data-action="input->trade-outcomes#getData" placeholder="Select level hit">
+                            <datalist id="levels">
+                                <option value="Stop Loss"></option>
+                                <option value="Entry Zone">
+                                <option value="BE">
+                                <option value="TP1">
+                                <option value="TP2">
+                                <option value="TP3">
+                                <option value="TP4">
+                                <option value="TP5">
+                            </datalist>
+                        </div>
+                    </div>
+                    <button type="button" data-action="trade-outcomes#addLevel">+</button>
+                </div>
+            </div>
+            <button type="button" data-action="trade-outcomes#addPath">Add Path</button>
+        </div>
+        <div class="dark-card mb-4">
+            <div class="mb-3">
+                <span style="font-size: 0.9rem; font-weight: 600; color: var(--text-primary);">Outcomes Overview</span>
+            </div>
+            <canvas style="max-height: 300px" data-trade-outcomes-target="customPathsOverview"></canvas>
+        </div>
+    </div>
+</div>

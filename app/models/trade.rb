@@ -1,3 +1,3 @@
 class Trade < ApplicationRecord
-  scope :in_last, ->(days) { where(open_time: days.days.ago..Time.now) }
+  scope :in_last, ->(days) { where("open_time >= ?", days.days.ago) }
 end
