@@ -1,9 +1,9 @@
-# Pin npm packages by running ./bin/importmap
-
 pin "application"
+pin "chart_plugins"
 pin "@hotwired/turbo-rails", to: "turbo.min.js"
 pin "@hotwired/stimulus", to: "stimulus.min.js"
 pin "@hotwired/stimulus-loading", to: "stimulus-loading.js"
 pin_all_from "app/javascript/controllers", under: "controllers"
-pin "@kurkle/color", to: "@kurkle--color.js" # @0.3.4
+pin "@kurkle/color", to: "@kurkle--color.js"
 pin "chart.js", to: "https://cdn.jsdelivr.net/npm/chart.js@4.5.1/+esm"
+pin "marked", to: "https://cdn.jsdelivr.net/npm/marked@13/+esm"

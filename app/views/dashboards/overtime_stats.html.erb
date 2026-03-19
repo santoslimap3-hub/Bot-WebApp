@@ -1,71 +1,91 @@
 <div class="d-flex align-items-stretch" data-controller="overtime-stats" data-trades="<%= @all_trades.to_json %>">
     <div><%= render 'shared/sidebar' %></div>
 
-    <div class="flex-grow-1 p-4" style="min-height: 100vh; background: var(--bg-base);">
+    <div class="flex-grow-1 dashboard-bg stats-page-bg">
+    <div class="page-inner stats-page-inner">
 
-        <div class="mb-4">
-            <h4 style="color: var(--text-primary); font-weight: 700;">Overtime Stats</h4>
-            <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">Historical performance overview</p>
+        <div class="stats-header">
+            <div>
+                <h4 class="mb-1" style="font-weight: 800;">Overtime Stats</h4>
+                <p class="m-0" style="color: var(--text-muted); font-size: 0.85rem;">Historical performance overview</p>
+            </div>
         </div>
 
-        <%# Cumulative P&L chart %>
-        <div class="dark-card mb-4">
+        <!-- Stat Cards Row -->
+        <div class="stats-kpi-row">
+            <div class="stats-kpi-card" data-overtime-stats-target="totalTrades"></div>
+            <div class="stats-kpi-card stats-kpi-accent-pnl" data-overtime-stats-target="pnl"></div>
+            <div class="stats-kpi-card stats-kpi-accent-win" data-overtime-stats-target="winRate"></div>
+            <div class="stats-kpi-card" data-overtime-stats-target="rR"></div>
+            <div class="stats-kpi-card stats-kpi-accent-profit" data-overtime-stats-target="avgWin"></div>
+            <div class="stats-kpi-card stats-kpi-accent-loss" data-overtime-stats-target="avgLoss"></div>
+        </div>
+
+        <!-- Cumulative P&L Chart -->
+        <div class="dark-card-inverse stats-chart-card">
             <div class="d-flex align-items-center justify-content-between mb-3">
-                <span style="font-size: 0.9rem; font-weight: 600; color: var(--text-primary);">Cumulative P&amp;L</span>
+                <span class="card-title-inverse"><span class="header-dot"></span>Cumulative P&amp;L</span>
             </div>
 
-            <div class="d-flex align-items-center flex-wrap gap-1 mb-3">
-                <% [["All time", 0], ["30d", 30], ["14d", 14], ["7d", 7], ["5d", 5], ["4d", 4], ["3d", 3], ["2d", 2], ["1d", 1]].each do |label, days| %>
-                    <button type="button" class="filter-btn"
-                            data-action="click->overtime-stats#filterDays"
-                            data-overtime-stats-days-param="<%= days %>"><%= label %></button>
-                <% end %>
+            <div class="stats-filter-row">
+                <div class="stats-filter-btns">
+                    <% [["All time", 0], ["30d", 30], ["14d", 14], ["7d", 7], ["5d", 5], ["4d", 4], ["3d", 3], ["2d", 2], ["1d", 1]].each do |label, days| %>
+                        <button type="button" class="filter-btn"
+                                data-action="click->overtime-stats#filterDays"
+                                data-overtime-stats-days-param="<%= days %>"><%= label %></button>
+                    <% end %>
+                </div>
 
-                <div class="d-flex align-items-center gap-1 ms-2">
-                    <span style="font-size: 0.75rem; color: var(--text-muted);">Custom:</span>
-                    <input type="date" class="dark-input form-control form-control-sm" style="width: 135px;"
-                           data-overtime-stats-target="customFrom">
-                    <span style="color: var(--text-muted);">–</span>
-                    <input type="date" class="dark-input form-control form-control-sm" style="width: 135px;"
-                           data-overtime-stats-target="customTo">
+                <div class="stats-custom-range">
+                    <span class="stats-custom-label">Custom:</span>
+                    <input type="date" class="dark-input form-control form-control-sm stats-date-input"
+                           autocomplete="off" data-overtime-stats-target="customFrom">
+                    <span style="color: rgba(255,255,255,0.3);">–</span>
+                    <input type="date" class="dark-input form-control form-control-sm stats-date-input"
+                           autocomplete="off" data-overtime-stats-target="customTo">
                     <button type="button" class="btn-accent"
                             data-action="click->overtime-stats#applyCustom">Apply</button>
                 </div>
             </div>
 
-            <canvas data-overtime-stats-target="canvas"></canvas>
-        </div>
-
-        <%# Daily P&L chart %>
-        <div class="dark-card mb-4">
-            <div class="mb-3">
-                <span style="font-size: 0.9rem; font-weight: 600; color: var(--text-primary);">Daily P&amp;L</span>
+            <div class="stats-chart-container" style="height: 340px;">
+                <canvas data-overtime-stats-target="canvas"></canvas>
             </div>
-            <canvas data-overtime-stats-target="barCanvas"></canvas>
         </div>
 
-        <%# Trade history table %>
-        <div class="dark-card p-0" style="overflow: hidden;">
-
-            <div class="d-flex align-items-center justify-content-between px-4 py-3"
-                 style="border-bottom: 1px solid var(--border);">
-                <span style="font-size: 0.9rem; font-weight: 600; color: var(--text-primary);">Trade History</span>
+        <!-- Bottom Row: Daily P&L + Trade History -->
+        <div class="stats-bottom-row">
+            <div class="dark-card-inverse stats-bottom-card">
+                <div class="mb-3">
+                    <span class="card-title-inverse"><span class="header-dot"></span>Daily P&amp;L</span>
+                </div>
+                <div class="stats-chart-container" style="height: 280px;">
+                    <canvas data-overtime-stats-target="barCanvas"></canvas>
+                </div>
             </div>
 
-            <table class="dark-table">
-                <thead>
-                    <tr>
-                        <th>Open Time</th>
-                        <th>Direction</th>
-                        <th>Symbol</th>
-                        <th>Profit</th>
-                    </tr>
-                </thead>
-                <tbody data-overtime-stats-target="tradeTable">
-                </tbody>
-            </table>
-
+            <div class="dark-card-inverse stats-bottom-card p-0 overflow-hidden">
+                <div class="d-flex align-items-center justify-content-between px-4 py-3 card-header-inverse">
+                    <span class="card-title-inverse"><span class="header-dot"></span>Trade History</span>
+                    <span class="card-subtitle-inverse">All trades</span>
+                </div>
+                <div style="max-height: 300px; overflow-y: auto;">
+                    <table class="dark-table-inverse">
+                        <thead>
+                            <tr>
+                                <th>Open Time</th>
+                                <th>Direction</th>
+                                <th>Symbol</th>
+                                <th>Profit</th>
+                            </tr>
+                        </thead>
+                        <tbody data-overtime-stats-target="tradeTable">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
+    </div>
     </div>
 </div>

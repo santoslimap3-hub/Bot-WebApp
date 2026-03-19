@@ -1,18 +1,11 @@
 Rails.application.routes.draw do
+  get "chats/index"
+  get "chats/show"
   devise_for :users
   get "pages/home"
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
 
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-
-  # Defines the root path route ("/")
-  # root "posts#index"
   devise_scope :user do
   root "devise/sessions#new"
   end
@@ -25,4 +18,7 @@ Rails.application.routes.draw do
   get "/overtime_stats", to: "dashboards#overtime_stats"
 
   get "/trade_outcomes", to: "dashboards#trade_outcomes"
+
+  post "/chats/message", to: "chats#message"
+  post "/chats/stream", to: "chats#stream"
 end

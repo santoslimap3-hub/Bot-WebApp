@@ -2,72 +2,147 @@
 
     <div><%= render 'shared/sidebar' %></div>
 
-    <div class="flex-grow-1 p-4" style="min-height: 100vh; background: var(--bg-base);">
+    <div class="flex-grow-1 dashboard-bg dashboard-scrollable">
+        <div class="dashboard-content">
 
-        <div class="mb-4">
-            <h4 style="color: var(--text-primary); font-weight: 700;">Dashboard</h4>
-            <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">Last 24 hours overview</p>
-        </div>
+            <div class="stats-header">
+                <div>
+                    <h4 class="mb-1" style="font-weight: 800;">Dashboard</h4>
+                    <p class="m-0" style="color: var(--text-muted); font-size: 0.85rem;">Trading overview</p>
+                </div>
+            </div>
 
-        <div class="row g-4 mb-4">
+            <!-- KPI Summary Cards -->
+            <div class="dash-kpi-row">
+                <div class="dash-kpi-card dash-kpi-trades">
+                    <div class="outcomes-kpi-icon" style="background: rgba(232,119,34,0.15); color: var(--accent);"><i class="bi bi-bar-chart-line"></i></div>
+                    <div class="outcomes-kpi-value"><%= @total_trades %></div>
+                    <div class="outcomes-kpi-label">Total Trades</div>
+                </div>
+                <div class="dash-kpi-card dash-kpi-winrate">
+                    <div class="outcomes-kpi-icon" style="background: var(--success-dim); color: var(--success);"><i class="bi bi-trophy"></i></div>
+                    <div class="outcomes-kpi-value"><%= @win_rate %>%</div>
+                    <div class="outcomes-kpi-label">Win Rate</div>
+                </div>
+                <div class="dash-kpi-card dash-kpi-pnl">
+                    <div class="outcomes-kpi-icon" style="background: rgba(168,85,247,0.15); color: #a78bfa;"><i class="bi bi-cash-stack"></i></div>
+                    <div class="outcomes-kpi-value <%= @net_profit >= 0 ? 'profit' : 'loss' %>"><%= @net_profit >= 0 ? '+' : '' %>€<%= '%.2f' % @net_profit %></div>
+                    <div class="outcomes-kpi-label">Net P&L</div>
+                </div>
+                <div class="dash-kpi-card dash-kpi-today">
+                    <div class="outcomes-kpi-icon" style="background: rgba(96,165,250,0.15); color: #60a5fa;"><i class="bi bi-calendar-check"></i></div>
+                    <div class="outcomes-kpi-value <%= @today_profit >= 0 ? 'profit' : 'loss' %>"><%= @today_profit >= 0 ? '+' : '' %>€<%= '%.2f' % @today_profit %></div>
+                    <div class="outcomes-kpi-label">Today</div>
+                </div>
+            </div>
 
-            <div class="col-md-4">
-                <div class="dark-card h-100">
-                    <h6>Net Profit (All Time)</h6>
-                    <div class="big-value <%= @net_profit >= 0 ? 'profit' : 'loss' %>">
-                        $<%= @net_profit %>
+            <div class="dashboard-grid">
+
+            <!-- P&L Hero Circle -->
+            <div class="grid-pnl d-flex flex-column align-items-center justify-content-center">
+                <div class="pnl-circle-wrapper">
+                    <div class="pnl-circle-ring"></div>
+                    <div class="pnl-circle d-flex flex-column align-items-center justify-content-center">
+                        <span class="pnl-label">P&L</span>
+                        <span class="pnl-value <%= @net_profit >= 0 ? 'profit' : 'loss' %>">
+                            <%= @net_profit >= 0 ? '+' : '' %>€<%= '%.2f' % @net_profit %>
+                        </span>
+                        <span class="pnl-percent <%= @win_rate >= 50 ? 'profit' : 'loss' %>"><%= @win_rate %>% win</span>
+                    </div>
+                </div>
+                <div class="pnl-sub-stats">
+                    <div class="pnl-sub-stat">
+                        <span class="pnl-sub-value"><%= @total_trades %></span>
+                        <span class="pnl-sub-label">trades</span>
+                    </div>
+                    <div class="pnl-sub-divider"></div>
+                    <div class="pnl-sub-stat">
+                        <span class="pnl-sub-value <%= @today_profit >= 0 ? 'profit' : 'loss' %>"><%= @today_profit >= 0 ? '+' : '' %>€<%= '%.2f' % @today_profit %></span>
+                        <span class="pnl-sub-label">today</span>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-8">
-                <div class="dark-card h-100">
-                    <h6>Warnings</h6>
-                    <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">No warnings detected</p>
+            <!-- Warnings -->
+            <div class="grid-warnings">
+                <div class="dark-card-inverse h-100 p-0 overflow-hidden d-flex flex-column">
+                    <div class="d-flex align-items-center justify-content-between px-4 py-3 card-header-inverse">
+                        <span class="card-title-inverse"><span class="header-dot"></span>Warnings</span>
+                        <span class="card-subtitle-inverse">Last 24h</span>
+                    </div>
+                    <div class="flex-grow-1" style="overflow-y: auto;">
+                        <table class="warnings-table dark-table-inverse" data-dashboard-target="warningsTable">
+                            <thead>
+                                <tr>
+                                    <th>Level</th>
+                                    <th>Message</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Trades -->
+            <div class="grid-trades">
+                <div class="dark-card-inverse h-100 p-0 overflow-hidden d-flex flex-column">
+                    <div class="d-flex align-items-center justify-content-between px-4 py-3 card-header-inverse">
+                        <span class="card-title-inverse"><span class="header-dot"></span>Recent Trades</span>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="trades-filter-label">Trades in the last:</span>
+                            <button class="filter-btn active" data-action="click->dashboard#filterTrades" data-days="1">24h</button>
+                            <button class="filter-btn" data-action="click->dashboard#filterTrades" data-days="2">48h</button>
+                            <button class="filter-btn" data-action="click->dashboard#filterTrades" data-days="7">7d</button>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1" style="overflow-y: auto;">
+                        <table class="dark-table-inverse" data-dashboard-target="tradesTable">
+                            <thead>
+                                <tr>
+                                    <th>Trade</th>
+                                    <th class="pnl-col-header">Profit / loss amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% max_profit = @recent_trades.map { |t| t.net_profit.abs }.max || 1 %>
+                                <% @recent_trades.each do |trade| %>
+                                    <tr class="trade-row-indicator <%= trade.net_profit >= 0 ? 'profit-row' : 'loss-row' %>"
+                                        data-trade-time="<%= trade.open_time.iso8601 %>">
+                                        <td class="td-trade-info">
+                                            <div class="trade-info-primary">
+                                                <span class="<%= trade.direction == 'BUY' ? 'badge-buy' : 'badge-sell' %>">
+                                                    <%= trade.direction %>
+                                                </span>
+                                                <span class="td-symbol"><%= trade.symbol %></span>
+                                            </div>
+                                            <div class="trade-info-secondary">
+                                                <%= trade.open_time.strftime("%H:%M %d %b") %>
+                                            </div>
+                                        </td>
+                                        <td class="pnl-col">
+                                            <div class="pnl-cell">
+                                                <span class="pnl-value <%= trade.net_profit >= 0 ? 'pnl-positive' : 'pnl-negative' %>">
+                                                    <%= trade.net_profit >= 0 ? '+' : '' %><%= number_to_currency(trade.net_profit, precision: 2) %>
+                                                </span>
+                                                <div class="pnl-bar-track">
+                                                    <div class="pnl-bar <%= trade.net_profit >= 0 ? 'pnl-bar-profit' : 'pnl-bar-loss' %>"
+                                                         style="width: <%= [(trade.net_profit.abs / max_profit * 100).round, 4].max %>%;"></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <% end %>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
         </div>
-
-        <div class="dark-card p-0" style="overflow: hidden;">
-
-            <div class="d-flex align-items-center justify-content-between px-4 py-3"
-                 style="border-bottom: 1px solid var(--border);">
-                <span style="font-size: 0.9rem; font-weight: 600; color: var(--text-primary);">Recent Trades</span>
-                <span style="font-size: 0.75rem; color: var(--text-muted);">Last 24h</span>
-            </div>
-
-            <table class="dark-table">
-                <thead>
-                    <tr>
-                        <th>Open Time</th>
-                        <th>Direction</th>
-                        <th>Symbol</th>
-                        <th>Profit</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% @recent_trades.each do |trade| %>
-                        <tr>
-                            <td style="color: var(--text-muted);">
-                                <%= trade.open_time.strftime("%H:%M %d %b") %>
-                            </td>
-                            <td>
-                                <span class="<%= trade.direction == 'BUY' ? 'badge-buy' : 'badge-sell' %>">
-                                    <%= trade.direction %>
-                                </span>
-                            </td>
-                            <td style="font-weight: 600;"><%= trade.symbol %></td>
-                            <td class="<%= trade.net_profit >= 0 ? 'profit' : 'loss' %> fw-semibold">
-                                $<%= trade.net_profit %>
-                            </td>
-                        </tr>
-                    <% end %>
-                </tbody>
-            </table>
-
         </div>
-
     </div>
 
 </div>

@@ -10,7 +10,38 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_13_045755) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_19_033338) do
+  create_table "chats", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "session_id", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "signal_records", force: :cascade do |t|
+    t.json "best_prices_per_tp"
+    t.json "bot_entries"
+    t.datetime "created_at", null: false
+    t.json "entry_events"
+    t.datetime "last_updated"
+    t.json "level_times"
+    t.integer "msg_id"
+    t.json "outcome_sequence"
+    t.boolean "price_entered_zone"
+    t.decimal "price_extreme_at_zone_arrival"
+    t.string "side"
+    t.decimal "signal_price"
+    t.datetime "signal_time"
+    t.json "signal_to_worst_edge"
+    t.decimal "sl_price"
+    t.json "tp_levels"
+    t.boolean "tracking_active"
+    t.boolean "tracking_complete"
+    t.datetime "tracking_ended_at"
+    t.datetime "tracking_started_at"
+    t.datetime "updated_at", null: false
+    t.json "zone"
+  end
+
   create_table "trades", force: :cascade do |t|
     t.string "close_comment"
     t.decimal "close_price"

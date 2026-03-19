@@ -1,60 +1,162 @@
-<div class="overall div d-flex justify-content-start gap-4" data-controller="trade-outcomes" data-trade-outcomes-records-value="<%= (@data || {}).to_json %>">
+<div class="d-flex align-items-stretch" data-controller="trade-chat" data-action="path-builder:updated->trade-chat#onPathsUpdated">
     <div><%= render "shared/sidebar" %></div>
-    <div class="items-div flex-grow-1 p-4" style="min-height: 100vh; background: var(--bg-base);">
-        <div class="dark-card mb-4">
-            <div class="mb-3">
-                <span style="font-size: 0.9rem; font-weight: 600; color: var(--text-primary);">Outcomes Overview</span>
+    <div class="flex-grow-1 dashboard-bg stats-page-bg">
+    <div class="page-inner stats-page-inner">
+
+        <div class="stats-header">
+            <div>
+                <h4 class="mb-1" style="font-weight: 800;">Trade Outcomes</h4>
+                <p class="m-0" style="color: var(--text-muted); font-size: 0.85rem;">Custom path analysis</p>
             </div>
-            <canvas style="max-height: 300px" data-trade-outcomes-target="outcomesOverview"></canvas>
         </div>
-        <div class="border">
-            <h4>Custom trades overview</h4>
-            <p>Add an order of levels hit and the graph will show you the number / P&L of trades that followed that path, example: TP1 → Breakeven → TP2 = 25 trades out of 100</p>
-            <div id="paths-container" class="paths-container">
-                <div class="trade-path border d-flex justify-content-start align-items-center">
-                    <h4>Trade_Path</h4>
-                    <div id="levels-container" class="levels-container d-flex justify-content-start align-items-center">
-                        <div class="input1">
-                            <input list="levels" data-action="input->trade-outcomes#getData" placeholder="Select level hit">
-                            <datalist id="levels">
-                                <option value="Stop Loss"></option>
-                                <option value="Entry Zone">
-                                <option value="BE">
-                                <option value="TP1">
-                                <option value="TP2">
-                                <option value="TP3">
-                                <option value="TP4">
-                                <option value="TP5">
-                            </datalist>
-                        </div>
-                        <div class="arrow-wrapper" data-action="mouseenter->trade-outcomes#toggleArrow mouseleave->trade-outcomes#toggleArrow">
-                            <span>→</span>
-                            <button class="remove-btn d-none" data-action="trade-outcomes#removeLevel">-</button>
-                        </div>
-                        <div class="input2">
-                            <input list="levels" data-action="input->trade-outcomes#getData" placeholder="Select level hit">
-                            <datalist id="levels">
-                                <option value="Stop Loss"></option>
-                                <option value="Entry Zone">
-                                <option value="BE">
-                                <option value="TP1">
-                                <option value="TP2">
-                                <option value="TP3">
-                                <option value="TP4">
-                                <option value="TP5">
-                            </datalist>
-                        </div>
-                    </div>
-                    <button type="button" data-action="trade-outcomes#addLevel">+</button>
+
+        <!-- KPI Summary Cards -->
+        <div class="outcomes-kpi-row">
+            <div class="outcomes-kpi-card outcomes-kpi-accent">
+                <div class="outcomes-kpi-icon" style="background: rgba(232,119,34,0.15); color: var(--accent);"><i class="bi bi-broadcast"></i></div>
+                <div class="outcomes-kpi-value"><%= @total_signals %></div>
+                <div class="outcomes-kpi-label">Total Signals</div>
+            </div>
+            <div class="outcomes-kpi-card outcomes-kpi-win">
+                <div class="outcomes-kpi-icon" style="background: var(--success-dim); color: var(--success);"><i class="bi bi-bullseye"></i></div>
+                <div class="outcomes-kpi-value"><%= @zone_entries %></div>
+                <div class="outcomes-kpi-label">Zone Entries</div>
+            </div>
+            <div class="outcomes-kpi-card outcomes-kpi-rate">
+                <div class="outcomes-kpi-icon" style="background: rgba(96,165,250,0.15); color: #60a5fa;"><i class="bi bi-percent"></i></div>
+                <div class="outcomes-kpi-value"><%= @hit_rate %>%</div>
+                <div class="outcomes-kpi-label">Hit Rate</div>
+            </div>
+            <div class="outcomes-kpi-card outcomes-kpi-depth">
+                <div class="outcomes-kpi-icon" style="background: rgba(168,85,247,0.15); color: #a78bfa;"><i class="bi bi-layers"></i></div>
+                <div class="outcomes-kpi-value">TP<%= @avg_tp_depth %></div>
+                <div class="outcomes-kpi-label">Avg TP Depth</div>
+            </div>
+            <div class="outcomes-kpi-card outcomes-kpi-loss">
+                <div class="outcomes-kpi-icon" style="background: var(--danger-dim); color: var(--danger);"><i class="bi bi-x-octagon"></i></div>
+                <div class="outcomes-kpi-value"><%= @sl_hits %></div>
+                <div class="outcomes-kpi-label">Stop Losses</div>
+            </div>
+        </div>
+
+        <!-- Two-column layout: Overview chart + Path builder -->
+        <div class="outcomes-main-grid" data-controller="path-builder" data-path-builder-records-value="<%= (@data || {}).to_json %>">
+            <!-- Left column: Outcomes Overview chart -->
+            <div class="dark-card-inverse outcomes-chart-card outcomes-overview-card" data-controller="outcomes-chart" data-outcomes-chart-records-value="<%= (@data || {}).to_json %>" data-outcomes-chart-total-value="<%= @total_signals %>">
+                <div class="mb-3">
+                    <span class="card-title-inverse"><span class="header-dot"></span>Outcomes Overview</span>
+                </div>
+                <div class="stats-chart-container" style="height: 380px;">
+                    <canvas data-outcomes-chart-target="canvas"></canvas>
                 </div>
             </div>
-            <button type="button" data-action="trade-outcomes#addPath">Add Path</button>
-        </div>
-        <div class="dark-card mb-4">
-            <div class="mb-3">
-                <span style="font-size: 0.9rem; font-weight: 600; color: var(--text-primary);">Outcomes Overview</span>
+
+            <!-- Right column: Path builder -->
+            <div class="outcomes-workspace">
+                <div class="dark-card-inverse outcomes-builder-card">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <span class="card-title-inverse"><span class="header-dot"></span>Path Builder</span>
+                        <span class="outcomes-builder-hint">Select levels to trace trade paths</span>
+                    </div>
+                    <div id="paths-container" class="paths-container">
+                        <div class="trade-path d-flex justify-content-start align-items-center">
+                            <h4>Path 1</h4>
+                            <div id="levels-container" class="levels-container d-flex justify-content-start align-items-center flex-wrap gap-2 flex-grow-1">
+                                <div class="input1 level-input-wrapper">
+                                    <input list="levels" data-action="input->path-builder#getData change->path-builder#onLevelSelect" placeholder="Select level">
+                                    <datalist id="levels">
+                                        <option value="Stop Loss"></option>
+                                        <option value="Entry Zone">
+                                        <option value="BE">
+                                        <option value="TP1">
+                                        <option value="TP2">
+                                        <option value="TP3">
+                                        <option value="TP4">
+                                        <option value="TP5">
+                                    </datalist>
+                                </div>
+                                <div class="arrow-connector d-flex align-items-center" data-action="mouseenter->path-builder#toggleArrow mouseleave->path-builder#toggleArrow">
+                                    <span class="connector-line"></span>
+                                    <span class="connector-arrow">›</span>
+                                    <button class="remove-btn d-none" data-action="path-builder#removeLevel">×</button>
+                                </div>
+                                <div class="input2 level-input-wrapper">
+                                    <input list="levels" data-action="input->path-builder#getData change->path-builder#onLevelSelect" placeholder="Select level">
+                                    <datalist id="levels">
+                                        <option value="Stop Loss"></option>
+                                        <option value="Entry Zone">
+                                        <option value="BE">
+                                        <option value="TP1">
+                                        <option value="TP2">
+                                        <option value="TP3">
+                                        <option value="TP4">
+                                        <option value="TP5">
+                                    </datalist>
+                                </div>
+                                <button type="button" class="outcomes-level-btn" data-action="path-builder#addLevel">+</button>
+                                <button type="button" class="outcomes-delete-btn" data-action="path-builder#deletePath">delete path</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <button type="button" class="outcomes-add-path-btn" data-action="path-builder#addPath">+ Add Path</button>
+                    </div>
+                    <div class="outcomes-level-legend mt-auto pt-3">
+                        <div class="legend-title">Level Reference</div>
+                        <div class="legend-items">
+                            <span class="legend-chip legend-chip-sl">Stop Loss</span>
+                            <span class="legend-chip legend-chip-entry">Entry Zone</span>
+                            <span class="legend-chip legend-chip-be">BE</span>
+                            <span class="legend-chip legend-chip-tp">TP1</span>
+                            <span class="legend-chip legend-chip-tp">TP2</span>
+                            <span class="legend-chip legend-chip-tp">TP3</span>
+                            <span class="legend-chip legend-chip-tp">TP4</span>
+                            <span class="legend-chip legend-chip-tp">TP5</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <canvas style="max-height: 300px" data-trade-outcomes-target="customPathsOverview"></canvas>
+
+            <!-- Full-width: Custom Path Outcomes chart -->
+            <div class="dark-card-inverse outcomes-chart-card outcomes-results-card outcomes-results-fullwidth">
+                <div class="mb-3">
+                    <span class="card-title-inverse"><span class="header-dot"></span>Custom Path Outcomes</span>
+                </div>
+                <div class="stats-chart-container outcomes-results-chart-container" style="height: 280px; position: relative;">
+                    <div class="outcomes-empty-state" data-path-builder-target="emptyState">
+                        <i class="bi bi-signpost-split"></i>
+                        <p>Build a path above to see results</p>
+                        <span>Select levels in the path builder to visualize trade outcomes</span>
+                    </div>
+                    <canvas data-path-builder-target="canvas"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    </div>
+    <div>
+        <div id="chat-bubble" data-action="click->trade-chat#toggle" style="position:fixed;
+        bottom:24px; right:24px; width:52px; height:52px; border-radius: 50%; display: flex;
+        align-items: center; justify-content: center; font-size:1.5rem; cursor:pointer; z-index:9999;
+        box-shadow:0 4px 12px rgba(0,0,0,0.3);">
+        💬
+        </div>
+        <div id="chat-box" class="d-none"
+            style="position:fixed; bottom:88px; right:24px; width:510px; height:580px;
+             background:#1e1e2e; border:1px solid #333; border-radius:12px; z-index:9999;
+             display:flex; flex-direction:column; box-shadow:0 8px 24px rgba(0,0,0,0.4);">
+             <div style="padding:12px 16px; border-bottom:1px solid #333; font-weight:600; color:#fff;">
+                Trading Assistant
+            </div>
+             <div data-trade-chat-target="messages" class="d-flex flex-column-reverse align-items-end"
+                style="flex:1; overflow-y:auto; padding:12px; display:flex; flex-direction:column; gap:8px; min-height: 0;">
+            </div>
+            <div style="padding:10px; border-top:1px solid #333; display:flex; gap:8px;">
+                <input data-trade-chat-target="input" type="text" class="form-control form-control-sm"
+                placeholder="Ask about your trades..." style="background:#ffffff !important; color:#000000 !important; border-color:#ccc !important;">
+                <button data-action="trade-chat#sendMessage" class="btn btn-primary btn-sm">Send</button>
+            </div>
         </div>
     </div>
 </div>

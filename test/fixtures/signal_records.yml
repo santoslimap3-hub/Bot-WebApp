@@ -1,0 +1,43 @@
+one:
+  msg_id: 1
+  side: MyString
+  signal_time: 2026-03-19 10:07:06
+  signal_price: 9.99
+  sl_price: 9.99
+  price_entered_zone: false
+  price_extreme_at_zone_arrival: 9.99
+  tracking_active: false
+  tracking_complete: false
+  tracking_started_at: 2026-03-19 10:07:06
+  tracking_ended_at: 2026-03-19 10:07:06
+  last_updated: 2026-03-19 10:07:06
+  tp_levels:
+  zone:
+  outcome_sequence:
+  level_times:
+  best_prices_per_tp:
+  bot_entries:
+  entry_events:
+  signal_to_worst_edge:
+
+two:
+  msg_id: 1
+  side: MyString
+  signal_time: 2026-03-19 10:07:06
+  signal_price: 9.99
+  sl_price: 9.99
+  price_entered_zone: false
+  price_extreme_at_zone_arrival: 9.99
+  tracking_active: false
+  tracking_complete: false
+  tracking_started_at: 2026-03-19 10:07:06
+  tracking_ended_at: 2026-03-19 10:07:06
+  last_updated: 2026-03-19 10:07:06
+  tp_levels:
+  zone:
+  outcome_sequence:
+  level_times:
+  best_prices_per_tp:
+  bot_entries:
+  entry_events:
+  signal_to_worst_edge:
