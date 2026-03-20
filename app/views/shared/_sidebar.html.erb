@@ -1,27 +1,29 @@
-<div class="sidebar d-flex flex-column align-items-center py-3 rounded-end-4" style="width: 80px; min-height: 100vh; position: sticky; top: 0;">
+<div class="sidebar d-flex flex-column align-items-center py-3" style="width: 80px; min-height: 100vh; position: sticky; top: 0;">
 
     <a href="/" class="text-decoration-none mb-4">
-        <span class="d-flex align-items-center justify-content-center rounded-3 fs-6" style="width:36px; height:36px; background: rgba(0,0,0,0.2);">⚡</span>
+        <span class="d-flex align-items-center justify-content-center rounded-3" style="width:36px; height:36px; background: var(--accent-dim);">
+            <i class="bi bi-lightning-charge-fill" style="font-size: 1rem; color: var(--accent);"></i>
+        </span>
     </a>
 
     <hr class="dark-hr w-100 mt-0 mb-3">
 
     <ul class="nav flex-column align-items-center gap-2 mb-auto w-100">
         <li class="nav-item w-100 text-center">
-            <%= link_to dashboard_path, class: "nav-link d-flex flex-column align-items-center gap-1 #{'active' if current_page?(dashboard_path)}", style: "font-size: 0.6rem; padding: 8px 4px;" do %>
-                <i class="bi bi-grid-fill" style="font-size: 1.2rem;"></i>
+            <%= link_to dashboard_path, class: "nav-link d-flex flex-column align-items-center gap-1 #{'active' if current_page?(dashboard_path)}" do %>
+                <i class="bi bi-grid-fill" style="font-size: 1.1rem;"></i>
                 Dashboard
             <% end %>
         </li>
         <li class="nav-item w-100 text-center">
-            <%= link_to overtime_stats_path, class: "nav-link d-flex flex-column align-items-center gap-1 #{'active' if current_page?(overtime_stats_path)}", style: "font-size: 0.6rem; padding: 8px 4px;" do %>
-                <i class="bi bi-bar-chart-line" style="font-size: 1.2rem;"></i>
+            <%= link_to overtime_stats_path, class: "nav-link d-flex flex-column align-items-center gap-1 #{'active' if current_page?(overtime_stats_path)}" do %>
+                <i class="bi bi-bar-chart-line" style="font-size: 1.1rem;"></i>
                 Stats
             <% end %>
         </li>
         <li class="nav-item w-100 text-center">
-            <%= link_to trade_outcomes_path, class: "nav-link d-flex flex-column align-items-center gap-1 #{'active' if current_page?(trade_outcomes_path)}", style: "font-size: 0.6rem; padding: 8px 4px;" do %>
-               <i class="bi bi-arrow-left-right" style="font-size: 1.2rem;"></i>
+            <%= link_to trade_outcomes_path, class: "nav-link d-flex flex-column align-items-center gap-1 #{'active' if current_page?(trade_outcomes_path)}" do %>
+               <i class="bi bi-arrow-left-right" style="font-size: 1.1rem;"></i>
                 Outcomes
             <% end %>
         </li>
@@ -29,8 +31,9 @@
 
     <hr class="dark-hr w-100 mb-2">
 
-    <%= button_to destroy_user_session_path, method: :delete, class: "btn-logout", style: "font-size: 0.6rem; padding: 4px 6px;" do %>
-        Out
+    <%= button_to destroy_user_session_path, method: :delete, class: "btn-logout" do %>
+        <i class="bi bi-box-arrow-left" style="font-size: 0.9rem;"></i>
+        Logout
     <% end %>
 
 </div>
