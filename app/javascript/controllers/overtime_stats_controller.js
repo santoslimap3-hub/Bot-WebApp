@@ -32,14 +32,25 @@ export default class extends Controller {
         this.profits_per_day = []
         let last_date = null
 
-        this.filteredTrades().forEach(trade => {
+        const filtered = this.filteredTrades()
+        if (filtered.length > 0) {
+            if (this.custom_from) {
+                this.dates.push(this.custom_from.toLocaleDateString())
+            } else {
+                const firstDate = new Date(filtered[0].date)
+                const startDate = new Date(firstDate)
+                startDate.setDate(startDate.getDate() - 1)
+                this.dates.push(startDate.toLocaleDateString())
+            }
+            this.cum_profits.push(0)
+        }
+
+        filtered.forEach(trade => {
             const current_date = new Date(trade.date)
             const profit = parseFloat(trade.profit)
 
             this.dates.push(current_date.toLocaleDateString())
-            this.cum_profits.push(
-                (this.cum_profits.length === 0 ? 0 : this.cum_profits[this.cum_profits.length - 1]) + profit
-            )
+            this.cum_profits.push(this.cum_profits[this.cum_profits.length - 1] + profit)
 
             if (last_date && current_date.toDateString() === last_date.toDateString()) {
                 this.profits_per_day[this.profits_per_day.length - 1] += profit
@@ -85,6 +96,33 @@ export default class extends Controller {
                     ctx.restore()
                 }
             }
+            const peakLabelsPlugin = {
+                id: 'peakLabels',
+                afterDatasetsDraw(chart) {
+                    const { ctx } = chart
+                    chart.data.datasets.forEach((dataset, i) => {
+                        const meta = chart.getDatasetMeta(i)
+                        const data = dataset.data
+                        if (data.length === 0) return
+                        let maxIdx = 0, minIdx = 0
+                        data.forEach((v, idx) => {
+                            if (v > data[maxIdx]) maxIdx = idx
+                            if (v < data[minIdx]) minIdx = idx
+                        })
+                        ;[maxIdx, minIdx].forEach(idx => {
+                            const point = meta.data[idx]
+                            const isMax = idx === maxIdx
+                            ctx.save()
+                            ctx.fillStyle = 'rgba(255,255,255,0.85)'
+                            ctx.font = 'bold 12px Inter, sans-serif'
+                            ctx.textAlign = 'center'
+                            ctx.textBaseline = isMax ? 'bottom' : 'top'
+                            ctx.fillText(parseFloat(data[idx].toFixed(2)), point.x, isMax ? point.y - 6 : point.y + 6)
+                            ctx.restore()
+                        })
+                    })
+                }
+            }
             const darkScales = {
                 x: {
                     grid: { color: 'rgba(255,255,255,0.06)' },
@@ -120,11 +158,11 @@ export default class extends Controller {
                                 label: ctx => `${ctx.dataset.label}: $${ctx.parsed.y.toFixed(2)}`
                             }
                         },
-                        datalabels: false
+                        dataLabels: false
                     },
                     scales: darkScales
                 },
-                plugins: [noDataPlugin]
+                plugins: [noDataPlugin, peakLabelsPlugin]
             })
         } else {
             this.barchat = new Chart(this.barCanvasTarget, {
@@ -150,7 +188,7 @@ export default class extends Controller {
                                 label: ctx => `${ctx.dataset.label}: $${ctx.parsed.y.toFixed(2)}`
                             }
                         },
-                        datalabels: false
+                        dataLabels: false
                     },
                     scales: {
                         x: {

@@ -7,6 +7,16 @@ export default class extends Controller {
     connect() {
         this.fetchTradeHistory();
         this.fetchErrorRecords();
+        this.applyDefaultTradeFilter();
+    }
+
+    applyDefaultTradeFilter() {
+        const cutoff = new Date();
+        cutoff.setDate(cutoff.getDate() - 1);
+        this.tradesTableTarget.querySelectorAll('tbody tr[data-trade-time]').forEach(row => {
+            const tradeTime = new Date(row.dataset.tradeTime);
+            row.style.display = tradeTime >= cutoff ? '' : 'none';
+        });
     }
 
     fetchTradeHistory() {

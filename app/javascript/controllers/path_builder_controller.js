@@ -94,10 +94,9 @@ export default class extends Controller {
                     easing: 'easeOutQuart'
                 },
                 layout: {
-                    padding: { top: 24 }
+                    padding: { top: 30 }
                 },
                 plugins: {
-                    dataLabels: false,
                     legend: { display: false },
                     tooltip: {
                         backgroundColor: 'rgba(15,15,19,0.92)',
