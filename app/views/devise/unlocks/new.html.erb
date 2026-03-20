@@ -1,16 +1,28 @@
-<h2>Resend unlock instructions</h2>
+<div class="auth-page">
+    <div class="auth-container">
+        <div class="auth-brand">
+            <div class="auth-brand-icon">
+                <i class="bi bi-unlock"></i>
+            </div>
+            <h1>Unlock account</h1>
+            <p>Resend unlock instructions</p>
+        </div>
 
-<%= form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+        <div class="auth-card">
+            <%= form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post }) do |f| %>
+                <%= render "devise/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <p><%= f.label :email %></p>
-    <p><%= f.email_field :email, autofocus: true, autocomplete: "email" %></p>
-  </div>
+                <label class="auth-label">Email</label>
+                <%= f.email_field :email,
+                    autofocus: true,
+                    autocomplete: "email",
+                    class: "auth-input",
+                    placeholder: "you@example.com" %>
 
-  <div class="actions">
-    <%= f.submit "Resend unlock instructions" %>
-  </div>
-<% end %>
+                <%= f.submit "Resend unlock instructions", class: "auth-submit" %>
+            <% end %>
 
-<%= render "devise/shared/links" %>
+            <%= render "devise/shared/links" %>
+        </div>
+    </div>
+</div>

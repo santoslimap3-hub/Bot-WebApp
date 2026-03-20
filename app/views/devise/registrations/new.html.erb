@@ -1,29 +1,45 @@
-<h2>Sign up</h2>
+<div class="auth-page">
+    <div class="auth-container">
+        <div class="auth-brand">
+            <div class="auth-brand-icon">
+                <i class="bi bi-graph-up-arrow"></i>
+            </div>
+            <h1>Create account</h1>
+            <p>Get started with your trading dashboard</p>
+        </div>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+        <div class="auth-card">
+            <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+                <%= render "devise/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <p><%= f.label :email %></p>
-    <p><%= f.email_field :email, autofocus: true, autocomplete: "email" %></p>
-  </div>
+                <label class="auth-label">Email</label>
+                <%= f.email_field :email,
+                    autofocus: true,
+                    autocomplete: "email",
+                    class: "auth-input",
+                    placeholder: "you@example.com" %>
 
-  <div class="field">
-    <p><%= f.label :password %></p>
-    <% if @minimum_password_length %>
-      <p><em>(<%= @minimum_password_length %> characters minimum)</em></p>
-    <% end %>
-    <p><%= f.password_field :password, autocomplete: "new-password" %></p>
-  </div>
+                <label class="auth-label">Password</label>
+                <% if @minimum_password_length %>
+                    <span style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 6px; display: block;">(<%= @minimum_password_length %> characters minimum)</span>
+                <% end %>
+                <%= f.password_field :password,
+                    autocomplete: "new-password",
+                    class: "auth-input",
+                    placeholder: "Min 6 characters" %>
 
-  <div class="field">
-    <p><%= f.label :password_confirmation %></p>
-    <p><%= f.password_field :password_confirmation, autocomplete: "new-password" %></p>
-  </div>
+                <label class="auth-label">Confirm Password</label>
+                <%= f.password_field :password_confirmation,
+                    autocomplete: "new-password",
+                    class: "auth-input",
+                    placeholder: "••••••••" %>
 
-  <div class="actions">
-    <%= f.submit "Sign up" %>
-  </div>
-<% end %>
+                <%= f.submit "Create account", class: "auth-submit" %>
+            <% end %>
 
-<%= render "devise/shared/links" %>
+            <div class="auth-links">
+                <p><%= link_to "Already have an account? Sign in", new_session_path(resource_name), class: "auth-footer-link" %></p>
+            </div>
+        </div>
+    </div>
+</div>

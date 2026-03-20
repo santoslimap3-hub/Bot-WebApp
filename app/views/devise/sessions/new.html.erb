@@ -1,43 +1,89 @@
-<div class="d-flex justify-content-center align-items-center vh-100 border">
-    <div class="d-flex flex-column align-items-center">
-        <h1 class="fs-4 fw-semibold text-center" style="color: #212121;">login</h1>
-        <p class="text-center mb-4" style="color: #757575">Sign in to your account</p>
-        <div class="card p-5 shadow" style="max_width: 400px; width: 100%; border-radius: 12px;">
-            <div data-controller="toggle-form">
-                <div data-toggle-form-target="loginCard" class="">
+<div class="auth-page">
+    <div class="auth-container" data-controller="toggle-form">
+        <div class="auth-brand">
+            <div class="auth-brand-icon">
+                <i class="bi bi-graph-up-arrow"></i>
+            </div>
+            <h1 data-toggle-form-target="loginTitle">Welcome back</h1>
+            <p data-toggle-form-target="loginSubtitle">Sign in to your account</p>
+            <h1 data-toggle-form-target="signupTitle" class="d-none">Create account</h1>
+            <p data-toggle-form-target="signupSubtitle" class="d-none">Get started with your trading dashboard</p>
+        </div>
+
+        <div class="auth-card">
+                <%# ── Sign In Form ── %>
+                <div data-toggle-form-target="loginCard">
                     <%= form_with model: resource, url: session_path(resource_name) do |form| %>
-                        <%= form.label :Email, class: "fs-14 fw-500", style: "color: #424242;" %>
-                        <%= form.text_field :email, data: { toggle_form_target: "email", action: "input->toggle-form#checkFields"}, class: "rounded-3 form-control mb-3", style: "height: 44px; padding: 0 12px; font-size: 15px;"%>  
-                        <%= form.label :Password, class: "fs-14 fw-500", style: "color: #424242" %>
-                        <%= form.password_field :password, data: { toggle_form_target: "password", action: "input->toggle-form#checkFields"}, class: "form-control rounded-3 mb-3", style: "height: 44px; padding: 0 12px; font-size: 15px"%>
-                        <%= form.submit "Sign-in", data: { toggle_form_target: "signInButton", action: "input->toggle-form#checkFields"}, disabled: true, class: "w-100 btn btn-danger rounded-3 fw-semibold mb-3", style: "border: none; background: #c62828; height: 46px; font-size: 15px;"%>
+                        <label class="auth-label">Email</label>
+                        <%= form.text_field :email,
+                            data: { toggle_form_target: "email", action: "input->toggle-form#checkFields" },
+                            class: "auth-input",
+                            placeholder: "you@example.com",
+                            autocomplete: "email" %>
+
+                        <label class="auth-label">Password</label>
+                        <%= form.password_field :password,
+                            data: { toggle_form_target: "password", action: "input->toggle-form#checkFields" },
+                            class: "auth-input",
+                            placeholder: "••••••••",
+                            autocomplete: "current-password" %>
+
+                        <%= form.submit "Sign in",
+                            data: { toggle_form_target: "signInButton" },
+                            disabled: true,
+                            class: "auth-submit" %>
                     <% end %>
-                    <div class="d-flex justify-content-between">
-                        <p>Don't have an account yet?</p>
-                        <button type="button" data-action="click->toggle-form#toggle">Create one</button>
+
+                    <div class="auth-footer">
+                        <p>Don't have an account?</p>
+                        <button type="button" class="auth-footer-link" data-action="click->toggle-form#toggle">Create one</button>
                     </div>
                 </div>
+
+                <%# ── Sign Up Form ── %>
                 <div data-toggle-form-target="signupCard" class="d-none">
                     <%= form_with model: resource, url: registration_path(resource_name) do |form| %>
-                        <%= form.label :Email, class: "fs-14 fw-500", style: "color: #424242;" %>
-                        <%= form.text_field :email, data: { toggle_form_target: "signUpEmail", action: "input->toggle-form#checkFields"}, class: "rounded-3 form-control mb-3", style: "height: 44px; padding: 0 12px; font-size: 15px;"%>
+                        <label class="auth-label">Email</label>
+                        <%= form.text_field :email,
+                            data: { toggle_form_target: "signUpEmail", action: "input->toggle-form#checkFields" },
+                            class: "auth-input",
+                            placeholder: "you@example.com",
+                            autocomplete: "email" %>
 
-                        <%= form.label :Password, class: "fs-14 fw-500", style: "color: #424242" %>
-                        <%= form.password_field :password, data: { toggle_form_target: "signUpPassword", action: "input->toggle-form#checkFields"}, class: "form-control rounded-3 mb-3", style: "height: 44px; padding: 0 12px; font-size: 15px"%>
+                        <label class="auth-label">Password</label>
+                        <%= form.password_field :password,
+                            data: { toggle_form_target: "signUpPassword", action: "input->toggle-form#checkFields" },
+                            class: "auth-input",
+                            placeholder: "Min 6 characters",
+                            autocomplete: "new-password" %>
 
-                        <%= form.label "Confirm password", class: "fs-14 fw-500", style: "color: #424242" %>
-                        <%= form.password_field :password_confirmation, data: { toggle_form_target: "signUpPasswordConfirmation", action: "input->toggle-form#checkFields"}, class: "form-control rounded-3 mb-3", style: "height: 44px; padding: 0 12px; font-size: 15px"%>
-                        <%= form.submit "Sign-up", data: { toggle_form_target: "signupButton"}, disabled: true, class: "w-100 btn btn-danger rounded-3 fw-semibold mb-3", style: "border: none; background: #c62828; height: 46px; font-size: 15px;"%>
+                        <label class="auth-label">Confirm Password</label>
+                        <%= form.password_field :password_confirmation,
+                            data: { toggle_form_target: "signUpPasswordConfirmation", action: "input->toggle-form#checkFields" },
+                            class: "auth-input",
+                            placeholder: "••••••••",
+                            autocomplete: "new-password" %>
+
+                        <%= form.submit "Create account",
+                            data: { toggle_form_target: "signupButton" },
+                            disabled: true,
+                            class: "auth-submit" %>
                     <% end %>
-                    <div class="d-flex justify-content-between">
-                        <p>Already have an account</p>
-                        <button type="button" data-action="click->toggle-form#toggle">Sign-in</button>
+
+                    <div class="auth-footer">
+                        <p>Already have an account?</p>
+                        <button type="button" class="auth-footer-link" data-action="click->toggle-form#toggle">Sign in</button>
                     </div>
                 </div>
-            </div>
+
             <% if flash[:alert] %>
-                <div class="alert alert-danger">
-                    <%= flash[:alert] %>
+                <div class="auth-alert auth-alert-danger">
+                    <i class="bi bi-exclamation-circle me-2"></i><%= flash[:alert] %>
+                </div>
+            <% end %>
+            <% if flash[:notice] %>
+                <div class="auth-alert auth-alert-success">
+                    <i class="bi bi-check-circle me-2"></i><%= flash[:notice] %>
                 </div>
             <% end %>
         </div>
